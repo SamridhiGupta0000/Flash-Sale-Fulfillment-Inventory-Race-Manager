@@ -1,8 +1,6 @@
 # Flash-Sale-Fulfillment-Inventory-Race-Manager
-# Flash-Sale Fulfillment & Inventory Race Manager
 
 A simulation and analysis platform that models the **backend fulfillment operations of a high-concurrency flash sale**, combining **Operating Systems and Database Management Systems concepts**.
-
 The project focuses on how thousands of concurrent orders can be scheduled, synchronized, and fulfilled while preventing **race conditions, overselling, inconsistent transactions, and deadlocks**.
 
 > **B.Tech OS & DBMS Project — V-2026-T209**
@@ -124,7 +122,7 @@ The system analyzes:
 
 ---
 
-# Proposed Technology Stack
+## Proposed Technology Stack
 
 | Layer                    | Technology                         |
 | ------------------------ | ---------------------------------- |
@@ -144,7 +142,7 @@ The final system will demonstrate how **process scheduling, synchronization, res
 
 ---
 
-# References
+## References
 
 1. Abraham Silberschatz, Peter B. Galvin, Greg Gagne, **Operating System Concepts**, 10th Edition, Wiley.
 2. Abraham Silberschatz, Henry F. Korth, S. Sudarshan, **Database System Concepts**, 7th Edition, McGraw-Hill.
@@ -153,7 +151,7 @@ The final system will demonstrate how **process scheduling, synchronization, res
 
 ---
 
-# Roles Information
+## Roles Information
 
 **Samridhi Gupta:** Concurrency, synchronization module
 **Sejal Kaur:** System design, scheduling
