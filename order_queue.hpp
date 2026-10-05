@@ -1,0 +1,57 @@
+// Order Queue is a classic PRODUCER-CONSUMER bounded buffer.
+// Producers : are customers placing orders
+// Consumers:  warehouse worker threads
+// empty_ : available queue slots
+// full_ : orders waiting to be processed
+// mutex  : protects the queue
+
+#include <mutex>
+#include <queue>
+#include <semaphore>
+#include "common.hpp"
+
+class OrderQueue {
+public:
+    explicit OrderQueue(std::ptrdiff_t capacity): empty_(capacity), full_(0) {}
+
+    void produce(Order o) { //placing order
+        // Wait until there is space in the bounded buffer
+        empty_.acquire();
+        {
+            std::lock_guard<std::mutex> g(m_);
+            o.state = OrderState::QUEUED;
+            q_.push(o);
+            Logger::log(
+                "Order ", o.id,
+                " queued | Product: ", o.productId,
+                " | Quantity: ", o.quantity,
+                " | Priority: ", o.priority
+            );
+        }
+        // Signal that a new order is given
+        full_.release();
+    }
+
+    Order consume() { // Warehouse worker taking up an order
+        full_.acquire(); // Wait until an order is placed
+        Order o;
+        {
+            std::lock_guard<std::mutex> g(m_);
+            o = q_.front();
+            q_.pop();}
+        empty_.release(); // Signal that a queue slot is freed
+
+        Logger::log(
+            "Order ", o.id,
+            " dequeued for processing");
+        return o;
+    }
+
+private:
+    std::mutex m_;
+    // FIFO queue.
+    // Scheduler will replace this queue for FCFS, SJF, Priority, and Round Robin.
+    std::queue<Order> q_;
+    std::counting_semaphore<> empty_;
+    std::counting_semaphore<> full_;
+};
