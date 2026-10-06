@@ -101,3 +101,56 @@ ON shipments(warehouse_id);
 
 CREATE INDEX idx_orders_status_created
 ON orders(order_status, created_at DESC);
+
+                //viewsss//
+
+CREATE VIEW low_stock_products AS
+SELECT
+    i.inventory_id,
+    p.product_id,
+    p.sku,
+    p.product_name,
+    w.warehouse_code,
+    i.stock_quantity,
+    i.reorder_level,
+    i.updated_at
+FROM inventory i
+JOIN products p
+    ON p.product_id = i.product_id
+JOIN warehouses w
+    ON w.warehouse_id = i.warehouse_id
+WHERE i.stock_quantity <= i.reorder_level;
+
+                //triggerssss//
+
+CREATE OR REPLACE FUNCTION set_inventory_updated_at()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    NEW.updated_at := CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER trg_inventory_updated_at
+BEFORE UPDATE ON inventory
+FOR EACH ROW
+EXECUTE FUNCTION set_inventory_updated_at();
+
+                //triggerssss//
+
+CREATE OR REPLACE FUNCTION set_order_updated_at()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    NEW.updated_at := CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER trg_order_updated_at
+BEFORE UPDATE ON orders
+FOR EACH ROW
+EXECUTE FUNCTION set_order_updated_at();
