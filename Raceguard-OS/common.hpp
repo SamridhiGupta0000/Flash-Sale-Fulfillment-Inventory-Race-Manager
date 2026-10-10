@@ -1,3 +1,4 @@
+#pragma once
 // Shared parts: Order, Logger.
 #include <iostream>
 #include <mutex>

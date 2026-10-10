@@ -101,9 +101,7 @@ ON shipments(warehouse_id);
 
 CREATE INDEX idx_orders_status_created
 ON orders(order_status, created_at DESC);
-
-                //viewsss//
-
+-- viewsss
 CREATE VIEW low_stock_products AS
 SELECT
     i.inventory_id,
@@ -120,9 +118,7 @@ JOIN products p
 JOIN warehouses w
     ON w.warehouse_id = i.warehouse_id
 WHERE i.stock_quantity <= i.reorder_level;
-
-                //triggerssss//
-
+-- triggerssss
 CREATE OR REPLACE FUNCTION set_inventory_updated_at()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -137,9 +133,7 @@ CREATE TRIGGER trg_inventory_updated_at
 BEFORE UPDATE ON inventory
 FOR EACH ROW
 EXECUTE FUNCTION set_inventory_updated_at();
-
-                //triggerssss//
-
+-- triggerssss
 CREATE OR REPLACE FUNCTION set_order_updated_at()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -154,3 +148,43 @@ CREATE TRIGGER trg_order_updated_at
 BEFORE UPDATE ON orders
 FOR EACH ROW
 EXECUTE FUNCTION set_order_updated_at();
+-- PRE DEFINEDEDDDD DATAAAAA
+INSERT INTO customers(full_name,email) VALUES
+('Aarav Sharma','aarav@example.com'),
+('Diya Verma','diya@example.com'),
+('Kabir Singh','kabir@example.com'),
+('Ananya Jain','ananya@example.com'),
+('Rohan Mehta','rohan@example.com');
+
+INSERT INTO products(sku,product_name,price) VALUES
+('RG-IP17','iPhone 17',79999.00),
+('RG-LP01','Gaming Laptop',129999.00),
+('RG-HP01','Wireless Headphones',4999.00),
+('RG-SW01','Smart Watch',8999.00);
+
+INSERT INTO warehouses
+(warehouse_code,warehouse_name,location)
+VALUES
+('WH-DEL','Delhi Fulfillment Center','Delhi'),
+('WH-DEH','Dehradun Fulfillment Center','Dehradun');
+
+INSERT INTO inventory
+(product_id,warehouse_id,stock_quantity,reorder_level)
+SELECT
+    p.product_id,
+    w.warehouse_id,
+    CASE p.sku
+        WHEN 'RG-IP17' THEN 10
+        WHEN 'RG-LP01' THEN 5
+        WHEN 'RG-HP01' THEN 25
+        ELSE 12
+    END,
+    CASE p.sku
+        WHEN 'RG-IP17' THEN 3
+        WHEN 'RG-LP01' THEN 2
+        WHEN 'RG-HP01' THEN 5
+        ELSE 3
+    END
+FROM products p
+CROSS JOIN warehouses w
+WHERE w.warehouse_code = 'WH-DEL';
