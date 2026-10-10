@@ -1,4 +1,7 @@
 # Flash-Sale-Fulfillment-Inventory-Race-Manager
+Files: common.hpp, order_queue.hpp, main_demo.cpp (queue only), main_db.cpp (queue + PostgreSQL),
+scheduler.cpp (CPU scheduling), schema.sql, reset_data.sql, demo.sql
+
 
 A simulation and analysis platform that models the **backend fulfillment operations of a high-concurrency flash sale**, combining **Operating Systems and Database Management Systems concepts**.
 The project focuses on how thousands of concurrent orders can be scheduled, synchronized, and fulfilled while preventing **race conditions, overselling, inconsistent transactions, and deadlocks**.
