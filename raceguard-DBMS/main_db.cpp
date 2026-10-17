@@ -5,11 +5,12 @@
 //                                   deduct stock, CONFIRM order, create payment + shipment; COMMIT
 //                                   (not enough stock -> order FAILED)
 //
-// Build: g++ -std=c++20 -pthread main_db.cpp -o pbl_db -lpqxx -lpq
+// Build: g++ -std=c++17 -pthread -Wno-deprecated-declarations main_db.cpp -o pbl_db -lpqxx -lpq
 // Run  : ./pbl_db "dbname=pbl user=postgres password=YOURPASS host=localhost"
 
 #include <atomic>
 #include <chrono>
+#include <functional>
 #include <thread>
 #include <vector>
 #include <pqxx/pqxx>
