@@ -1,4 +1,3 @@
--- Run before each demo to start clean (keeps customers/products/warehouses).
 TRUNCATE payments, shipments, order_items, orders RESTART IDENTITY CASCADE;
 
 UPDATE inventory SET stock_quantity = CASE p.sku
