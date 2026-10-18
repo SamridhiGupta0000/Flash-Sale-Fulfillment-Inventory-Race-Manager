@@ -4,6 +4,7 @@
 #include<algorithm>
 #include<string>
 #include<iomanip>
+
 struct Job{
     int id;
     int arrival;
@@ -149,7 +150,6 @@ Metrics runRoundRobin(int quantum) {
             clock = jobs[next].arrival;
             continue;
         }
-
         int i = q.front(); q.pop();
         Job& j = jobs[i];
         if (j.start_time == -1) {
@@ -184,7 +184,6 @@ int main() {
     Metrics sjf  = runSJF();
     Metrics prio = runPriority();
     Metrics rr   = runRoundRobin(3);
-
     std::cout << "\n=== Comparison ===\n";
     std::cout << std::left << std::setw(14) << "Algorithm" << std::setw(10) << "AvgWT"
               << std::setw(10) << "AvgTAT" << std::setw(10) << "AvgRT" << "Throughput\n";
