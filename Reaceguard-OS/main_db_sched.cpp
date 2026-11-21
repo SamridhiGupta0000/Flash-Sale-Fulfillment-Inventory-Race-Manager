@@ -22,7 +22,8 @@ static const int UNIT_MS = 100;        // 1 unit of quantity = 100 ms of packing
 static const int QUANTUM = 1;          // Round Robin slice (units)
 
 // ---------- PRODUCER: customer places an order ----------
-static int g_total = 0;                // total orders (for progress messages)
+static int g_total = 0;
+static int g_products = 4;            // read from the database at start-up                // total orders (for progress messages)
 
 void customerThread(const std::string& conninfo, SchedQueue& queue,
                     int threadIdx, int numOrders) {
@@ -30,7 +31,7 @@ void customerThread(const std::string& conninfo, SchedQueue& queue,
     try {
         pqxx::connection conn(conninfo);
         for (int i = 0; i < numOrders; i++) {
-            int productId = 1 + (customerId + i) % 4;
+            int productId = 1 + (customerId + i) % g_products;
             int quantity  = 1 + (i % 3);
             int priority  = (customerId + i) % 5;      // lower number = more urgent
 
@@ -132,6 +133,11 @@ int main(int argc, char* argv[]) {
     const int WORKERS      = (argc > 5) ? std::atoi(argv[5]) : 2;
     const int total = CUSTOMERS * ORDERS_EACH;
     g_total = total;
+    {   // how many products exist? (ids are 1..N)
+        pqxx::connection cc(conninfo); pqxx::work w(cc);
+        pqxx::result pr = w.exec_params("SELECT COUNT(*) FROM products");
+        g_products = std::max(1, pr[0][0].as<int>());
+    }
     auto startTime = std::chrono::steady_clock::now();
 
     SchedQueue queue(policy, total);                   // room for all orders -> backlog builds up

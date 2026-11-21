@@ -1,5 +1,4 @@
--- Reset for the LARGE dataset run (400 orders). Demand is about 200 units per product.
--- Laptop stock is deliberately low (150) so some laptop orders FAIL near the end.
+
 TRUNCATE payments, shipments, order_items, orders RESTART IDENTITY CASCADE;
 
 UPDATE inventory SET stock_quantity = CASE p.sku
