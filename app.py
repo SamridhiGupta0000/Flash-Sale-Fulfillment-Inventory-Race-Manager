@@ -1,8 +1,7 @@
-# Web UI: login/sign-up (admin + customers), place orders, admin dashboard, multi-warehouse processing
-# Run: python3 app.py   then open http://localhost:5000
+
 import os, subprocess, psycopg2, psycopg2.extras
 from functools import wraps
-from flask import Flask, request, session, redirect, jsonify, render_template_string as T
+from flask  import Flask, request, session, redirect, jsonify, render_template_string as T
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET", "pbl-dev-secret")

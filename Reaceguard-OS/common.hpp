@@ -13,10 +13,10 @@ enum class OrderState {
 };
 
 struct Order {
-    int id = -1;          // orders.order_id
-    int productId = 0;    // orders.product_id
-    int quantity = 1;     // orders.quantity
-    int priority = 0;     // OS scheduler priority
+    int id = -1;          
+    int productId = 0;    
+    int quantity = 1;     
+    int priority = 0;     
     OrderState state = OrderState::NEW;
 };
 
